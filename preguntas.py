@@ -11,6 +11,25 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 
 """
+## Obtenes Datos
+
+def get_columns(filename):
+    values_list = []
+    with open(filename) as file:
+        for row in file:
+            values = row.strip().split('\t')
+            values_list.append(values)
+    columns_list = list(zip(*values_list))
+    return columns_list
+
+data=get_columns('data.csv')
+
+
+columna_1=list(data[0])
+columna_2=list(data[1])
+columna_3=list(data[2])
+columna_4=list(data[3])
+columna_5=list(data[4])
 
 
 def pregunta_01():
@@ -21,7 +40,9 @@ def pregunta_01():
     214
 
     """
-    return
+    lista_numeros=[int(num) for num in columna_2]
+    
+    return sum(lista_numeros)
 
 
 def pregunta_02():
@@ -39,7 +60,13 @@ def pregunta_02():
     ]
 
     """
-    return
+    letras_unique=list(set(columna_1))
+
+    cuenta=[]
+    for letra in letras_unique:
+        cuenta.append((letra, columna_1.count(letra)))
+      
+    return sorted(cuenta)
 
 
 def pregunta_03():
@@ -57,7 +84,17 @@ def pregunta_03():
     ]
 
     """
-    return
+    letras_unicas=list(set(columna_1)) 
+    
+    guardar=[]
+    for letra in letras_unicas:
+        num=[]
+        for index in range(len(columna_1)):
+            if columna_1[index]==letra:
+                num.append(int(columna_2[index]))
+        guardar.append((letra,sum(num)))
+        
+    return sorted(guardar)
 
 
 def pregunta_04():
@@ -82,7 +119,19 @@ def pregunta_04():
     ]
 
     """
-    return
+    meses=[]
+    for date in columna_3:
+        anio, mes , dia = date.split('-')
+        meses.append(mes)
+
+    cuentas={}
+    for mes in meses:
+        if mes in cuentas:
+            cuentas[mes] += 1
+        else:
+            cuentas[mes] = 1
+    
+    return sorted(list(cuentas.items()))
 
 
 def pregunta_05():
@@ -100,7 +149,17 @@ def pregunta_05():
     ]
 
     """
-    return
+    lista_unica=list(set([letra for letra in columna_1]))
+    lista_tupla=[]
+
+    for letra in lista_unica:
+        num=[]
+        for i in range(len(columna_1)):
+            if columna_1[i]==letra:
+                num.append(int(columna_2[i]))
+        lista_tupla.append((letra,max(num),min(num)))
+        
+    return sorted(lista_tupla)
 
 
 def pregunta_06():
@@ -125,7 +184,20 @@ def pregunta_06():
     ]
 
     """
-    return
+    lista=list(map(lambda string: string.split(','), columna_5))  
+    lista_total=[string for s in lista for string in s] 
+
+    lista_unica=list(set([string[0:3] for string in lista_total])) 
+
+    conteo=[]
+    for string_unique in lista_unica: 
+        num=[]
+        for string in lista_total:
+            if string[0:3]==string_unique:
+                num.append(int(string.split(':')[-1]))
+        conteo.append((string_unique, min(num), max(num)))
+    
+    return sorted(conteo)
 
 
 def pregunta_07():
@@ -149,7 +221,15 @@ def pregunta_07():
     ]
 
     """
-    return
+    lista_tupla=[]
+    for i in range(0,10):
+        letras=[]
+        for index in range(len(columna_2)):
+            if i==int(columna_2[index]):
+                letras.append(columna_1[index])
+        lista_tupla.append((i, letras))
+    
+    return lista_tupla
 
 
 def pregunta_08():
@@ -174,7 +254,15 @@ def pregunta_08():
     ]
 
     """
-    return
+    lista_tupla=[]
+    for i in range(0,10):
+        letras=[]
+        for index in range(len(columna_2)):
+            if i==int(columna_2[index]):
+                letras.append(columna_1[index])
+        lista_tupla.append((i, sorted(list(set(letras)))))
+
+    return lista_tupla
 
 
 def pregunta_09():
@@ -197,7 +285,17 @@ def pregunta_09():
     }
 
     """
-    return
+    lista=list(map(lambda string: string.split(','), columna_5)) 
+    lista_total=[string[0:3] for s in lista for string in s] 
+
+    conteo={}
+    for string in lista_total:
+        if string in conteo:
+            conteo[string]+=1
+        else:
+            conteo[string]=1
+    
+    return dict(sorted(conteo.items()))
 
 
 def pregunta_10():
@@ -218,7 +316,11 @@ def pregunta_10():
 
 
     """
-    return
+    lista_tupla=[]
+    for index in range(len(columna_1)):
+        lista_tupla.append((columna_1[index], len(columna_4[index].split(',')), len(columna_5[index].split(','))))
+    
+    return lista_tupla
 
 
 def pregunta_11():
@@ -239,7 +341,21 @@ def pregunta_11():
 
 
     """
-    return
+    columna_4_split=[x.split(',') for x in columna_4]
+    letras_unique=list(set([string for s in columna_4_split for string in s]))
+    
+    diccionario={}
+    for letra in letras_unique:
+        numeros=[]
+        for i in range(len(columna_2)):
+            for j in range(len(columna_4[i])):
+                if columna_4[i][j]==letra:
+                    numeros.append(int(columna_2[i]))
+        diccionario[letra]=sum(numeros)
+    
+    
+    
+    return dict(sorted(diccionario.items()))
 
 
 def pregunta_12():
@@ -257,4 +373,17 @@ def pregunta_12():
     }
 
     """
-    return
+    columna_5_split=[x.split(',') for x in columna_5] 
+    letras_unica=list(set(columna_1)) 
+    
+    Diccionario={} 
+    for letra in letras_unica: 
+        numeros=[]
+        for i in range (len(columna_5_split)):
+            if columna_1[i]==letra: 
+                for j in range (len(columna_5_split[i])):
+                    carac, num =columna_5_split[i][j].split(':') 
+                    numeros.append(int(num)) 
+        Diccionario[letra]=sum(numeros)
+    
+    return dict(sorted(Diccionario.items()))  
